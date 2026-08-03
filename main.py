@@ -5,7 +5,7 @@ import telebot
 import random
 
 # የቦትዎን ቶከን እዚህ ያስገቡ
-TOKEN = 'የእርስዎን_ቶከን_እዚህ_ያስገቡ'
+TOKEN = '8970603591:AAFc45JppRrV6t3Kd4392u0JCuvJ_ATVUpA'
 bot = telebot.TeleBot(TOKEN)
 
 # --- 1. የቢንጎ ሎጂክ (Bingo Logic) ---
