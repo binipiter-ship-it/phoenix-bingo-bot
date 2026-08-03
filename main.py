@@ -42,6 +42,33 @@ def format_card_to_text(card):
 
 # --- 2. የቴሌግራም ቦት ትዕዛዞች (Bot Handlers) ---
 @bot.message_handler(commands=['start'])
+import json
+
+# ... (ከላይ ያሉ ሌሎች ኮዶችዎ እንዳሉ ሆነው) ...
+
+@bot.message_handler(content_types=['web_app_data'])
+def handle_web_app_data(message):
+    """ከሚኒ-አፑ የሚመጣውን የካርድ ምርጫ መቀበያ"""
+    try:
+        # ከ ሚኒ-አፑ (script.js) የተላከውን ዳታ ማንበብ
+        data = json.loads(message.web_app_data.data)
+        action = data.get('action')
+        card_id = data.get('card_id')
+
+        if action == 'card_selected':
+            # 1. መምረጡን ማረጋገጫ መልዕክት መላክ
+            bot.send_message(message.chat.id, f"✅ በተሳካ ሁኔታ ካርድ ቁጥር #{card_id} መርጠዋል!")
+
+            # 2. ለተጫዋቹ የካርዱን 5x5 ሰንጠረዥ አውጥቶ መላክ
+            new_card = generate_bingo_card()
+            card_text = format_card_to_text(new_card)
+            bot.send_message(message.chat.id, card_text, parse_mode='HTML')
+
+    except Exception as e:
+        bot.send_message(message.chat.id, "❌ ይቅርታ፣ መረጃውን መቀበል አልተቻለም።")
+
+# ... (ከስር ያሉት የ Render ሰርቨር ኮዶች እንዳሉ ይቀጥላሉ) ...
+
 def send_welcome(message):
     welcome_text = "ሰላም! ወደ ፊኒክስ ቢንጎ (Phoenix Bingo) እንኳን በደህና መጡ! 🎮\nእነሆ የሙከራ ካርድዎ፦"
     bot.reply_to(message, welcome_text)
