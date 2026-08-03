@@ -1,10 +1,9 @@
 import os
 import threading
 import http.server
-import socketserver
 import telebot
 
-# የራስዎን የ BotFather ቶከን እዚህ በትክክል ያስገቡ
+# የቦትዎን ቶከን እዚህ ያስገቡ
 TOKEN = '8970603591:AAFc45JppRrV6t3Kd4392u0JCuvJ_ATVUpA'
 bot = telebot.TeleBot(TOKEN)
 
@@ -12,23 +11,23 @@ bot = telebot.TeleBot(TOKEN)
 def send_welcome(message):
     bot.reply_to(message, "ሰላም! ወደ ፊኒክс ቢንጎ (Phoenix Bingo) እንኳን በደህና መጡ! 🎮")
 
-# Render የሚጠይቀውን ፖርት (Port) ክፍት የሚያደርግ ትንሽ ሰርቨር
+# Render የሚፈልገውን ፖርት (Port) የሚያዘጋጅ ሰርቨር
 PORT = int(os.environ.get("PORT", 10000))
 
-class HealthCheckHandler(http.server.SimpleHTTPRequestHandler):
+class SimpleHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"Bot is alive and running!")
 
 def run_server():
-    with socketserver.TCPServer(("", PORT), ) as httpd:
-        print(f"Serving HTTP on port {PORT}")
-        httpd.serve_forever()
+    server = http.server.HTTPServer(("", PORT), SimpleHandler)
+    print(f"HTTP server running on port {PORT}")
+    server.serve_forever()
 
-# ሰርቨሩን ከበስተጀርባ (Background) እናስጀምራለን
+# ሰርቨሩን ከበስተጀርባ እናስጀምራለን
 server_thread = threading.Thread(target=run_server, daemon=True)
 server_thread.start()
 
-print("ሰርቨሩ ስራ ጀምሯል... ቦቱ መልእክት እየጠበቀ ነው!")
+print("ቦቱ ስራ ጀምሯል...")
 bot.infinity_polling()
