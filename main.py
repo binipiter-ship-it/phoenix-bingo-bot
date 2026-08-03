@@ -5,7 +5,7 @@ import socketserver
 import telebot
 
 # የራስዎን የ BotFather ቶከን እዚህ በትክክል ያስገቡ
-TOKEN = '8970603591:AAGWxqJ7Kfu_r2R5d8VjMstT2jt7R2ua-fI'
+TOKEN = '8970603591:AAFc45JppRrV6t3Kd4392u0JCuvJ_ATVUpA'
 bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
