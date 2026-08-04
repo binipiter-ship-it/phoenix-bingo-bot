@@ -59,6 +59,34 @@ user_cards = {}
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    @bot.message_handler(content_types=['web_app_data'])
+def handle_web_app_data(message):
+    try:
+        data = json.loads(message.web_app_data.data)
+        card_id = data.get('card_id')
+        user_id = message.from_user.id
+
+        if card_id:
+            user_cards[user_id] = card_id
+
+            bot.send_message(
+                message.chat.id, 
+                f"✅ **እንኳን ደስ አሎት!** ካርድ ቁጥር **#{card_id}**ን በተሳካ ሁኔታ መርጠዋል!\n\n⏳ ጨዋታው ሊጀምር **1 ደቂቃ** ይቀረዋል... ሰዓቱ ሲያልቅ አውቶማቲክ ወደ ጨዋታው ይገባሉ። ይቆዩን!"
+            )
+
+            def countdown_and_start():
+                time.sleep(60) # 1 ደቂቃ መጠበቅ
+                bot.send_message(
+                    message.chat.id, 
+                    f"🚀 **የጨዋታ ሰዓት ደርሷል!**\nእርስዎ የያዙት ካርድ ቁጥር **#{card_id}** ወደ ጨዋታው ገብቷል! ቁጥሮች መጥራት ተጀምረዋል..."
+                )
+
+            # ቲመሩን ከቦቱ ዋና ስራ ጋር እንዳይጣላ በ Thread ማስኬድ
+            threading.Thread(target=countdown_and_start).start()
+
+    except Exception as e:
+        bot.send_message(message.chat.id, "❌ ይቅርታ፣ መረጃውን መቀበል አልተቻለም። እባክዎ እንደገና ይሞክሩ።")
+
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     # እዚህ ጋር የራስዎን ሚኒ-አፕ ሊንክ በትክክል ያስገቡ
     web_app_url = "https://binipiter-ship-it.github.io/phoenix-bingo/" 
