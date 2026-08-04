@@ -41,7 +41,49 @@ def format_card_to_text(card):
     return text
 
 # --- 2. የቴሌግራም ቦት ትዕዛዞች (Bot Handlers) ---
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
+import json
+import time
+import threading
+
+# የተጠቃሚዎችን የተመረጠ ካርድ ለመያዝ
+user_cards = {}
+
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
+import json
+import time
+import threading
+
+# የተጠቃሚዎችን የተመረጠ ካርድ ለመያዝ
+user_cards = {}
+
 @bot.message_handler(commands=['start'])
+def send_welcome(message):
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    # እዚህ ጋር የራስዎን ሚኒ-አፕ ሊንክ በትክክል ያስገቡ
+    web_app_url = "https://binipiter-ship-it.github.io/phoenix-bingo/" 
+    
+    markup.add(KeyboardButton(text="🎲 ፊኒክስ ቢንጎ ለመክፈት እዚህ ይጫኑ", web_app=WebAppInfo(url=web_app_url)))
+    
+    bot.send_message(
+        message.chat.id, 
+        "ደህና መጡ! ወደ ፊኒክስ ቢንጎ ጨዋታ ለመቀላቀል ከታች ያለውን ቁልፍ ይጫኑ፦", 
+        reply_markup=markup
+    )
+
+def send_welcome(message):
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    # እዚህ ጋር የራስዎን ሚኒ-አፕ ሊንክ በትክክል ያስገቡ
+    web_app_url = "https://binipiter-ship-it.github.io/phoenix-bingo/" 
+    
+    markup.add(KeyboardButton(text="🎲 ፊኒክስ ቢንጎ ለመክፈት እዚህ ይጫኑ", web_app=WebAppInfo(url=web_app_url)))
+    
+    bot.send_message(
+        message.chat.id, 
+        "ደህና መጡ! ወደ ፊኒክስ ቢንጎ ጨዋታ ለመቀላቀል ከታች ያለውን ቁልፍ ይጫኑ፦", 
+        reply_markup=markup
+    )
+
 import json
 
 # ... (ከላይ ያሉ ሌሎች ኮዶችዎ እንዳሉ ሆነው) ...
