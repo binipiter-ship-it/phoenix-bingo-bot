@@ -59,6 +59,20 @@ user_cards = {}
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    
+    # የ200 ካርዶች አዲሱ ሊንክ እዚህ ጋር አለ (አይጠፋም!)
+    web_app_url = "https://binipiter-ship-it.github.io/phoenix-bingo-ui/" 
+    
+    markup.add(KeyboardButton(text="🎲 ፊኒክስ ቢንጎ ለመክፈት እዚህ ይጫኑ", web_app=WebAppInfo(url=web_app_url)))
+    
+    bot.send_message(
+        message.chat.id, 
+        "ደህና መጡ! ወደ ፊኒክስ ቢንጎ ጨዋታ ለመቀላቀል ከታች ያለውን ቁልፍ ይጫኑ፦", 
+        reply_markup=markup
+    )
+
+def send_welcome(message):
     @bot.message_handler(content_types=['web_app_data'])
 def handle_web_app_data(message):
     try:
