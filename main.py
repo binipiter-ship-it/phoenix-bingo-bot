@@ -102,7 +102,80 @@ def handle_web_app_data(message):
 def send_welcome(message):
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     # እዚህ ጋር የራስዎን ሚኒ-አፕ ሊንክ በትክክል ያስገቡ
-    web_app_url = "https://binipiter-ship-it.github.io/phoenix-bingo/" 
+    web_app_url = "// የቴሌግራም ሚኒ-አፕ ኤፒአይን እናስጀምራለን
+const tg = window.Telegram.WebApp;
+tg.expand(); // ሙሉ ስክሪን እንዲሆን
+
+const cardsGrid = document.getElementById('cards-grid');
+const confirmBtn = document.getElementById('confirm-btn');
+let selectedCardId = null;
+
+// 200 የሙከራ ካርዶችን እንፈጥራለን
+function initializeCards() {
+    for (let i = 1; i <= 200; i++) {
+        const cardSlot = document.createElement('div');
+        cardSlot.className = 'bingo-card-slot';
+        cardSlot.id = card-${i};
+        
+        // ካርዱን ዲዛይን (ቁጥር እና ስታተስ)
+        cardSlot.innerHTML = 
+            <div class="card-number">#${i}</div>
+            <div class="card-status">ያልተያዘ</div>
+        ;
+
+        // ሎጂክ፡ በዘፈቀደ 30% የሚሆኑትን ካርዶች "የተያዙ" (Sold) እናድርጋቸው
+        // (በኋላ ላይ ይሄ መረጃ ከቦቱ ይመጣል)
+        if (Math.random() < 0.3) {
+            cardSlot.classList.add('sold');
+            cardSlot.querySelector('.card-status').innerText = 'የተሸጠ';
+        } else {
+            // "የተያዘ" ካልሆነ ክሊክ ሲደረግ የሚሰራ ሎጂክ እንጨምራለን
+            cardSlot.addEventListener('click', () => selectCard(i));
+        }
+
+        cardsGrid.appendChild(cardSlot);
+    }
+}
+
+// ካርድ ሲመረጥ የሚሰራ ሎጂክ
+function selectCard(cardId) {
+    // ቀድሞ የተመረጠ ካርድ ካለ፣ ምርጫውን እናጠፋለን
+    if (selectedCardId) {
+        document.getElementById(card-${selectedCardId}).classList.remove('selected');
+        document.getElementById(card-${selectedCardId}).querySelector('.card-status').innerText = 'ያልተያዘ';
+    }
+
+    // አዲሱን ካርድ እንመርጣለን
+    selectedCardId = cardId;
+    const selectedCardSlot = document.getElementById(card-${cardId});
+    selectedCardSlot.classList.add('selected');
+    selectedCardSlot.querySelector('.card-status').innerText = 'ተመርጧል';
+
+    // ማረጋገጫ ቁልፉን እናበራለን (Enable)
+    confirmBtn.disabled = false;
+    confirmBtn.innerText = ካርድ #${cardId} መርጠዋል - አረጋግጥ;
+}
+
+// ማረጋገጫ ቁልፍ ሲጫን
+confirmBtn.addEventListener('click', () => {
+    if (selectedCardId) {
+        // የቴሌግራም ሚኒ-አፕ መረጃውን ወደ ፓይዘን ቦቱ ይመልሳል
+        const dataToSend = {
+            action: 'card_selected',
+            card_id: selectedCardId
+        };
+        tg.sendData(JSON.stringify(dataToSend)); // መረጃ መላክ
+        tg.close(); // ሚኒ-አፑን መዝጋት
+    }
+});
+
+// የቦቱ ጀርባ ቀለም ሲቀየር እንዲስተካከል
+tg.onEvent('mainButtonClicked', function(){
+	// (ያልተጠቀመ)
+});
+
+// ጨዋታው ሲከፈት ካርዶችን እንፍጠር
+initializeCards();" 
     
     markup.add(KeyboardButton(text="🎲 ፊኒክስ ቢንጎ ለመክፈት እዚህ ይጫኑ", web_app=WebAppInfo(url=web_app_url)))
     
